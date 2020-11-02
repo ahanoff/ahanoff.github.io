@@ -6,5 +6,23 @@
     <description>Recent content on Akhan Zhakiyanov&#39;s website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="https://ahanoff.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Projects</title>
+      <link>https://ahanoff.dev/projects/</link>
+      <pubDate>Mon, 02 Nov 2020 20:19:14 +0800</pubDate>
+      
+      <guid>https://ahanoff.dev/projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://ahanoff.dev/about/</link>
+      <pubDate>Mon, 02 Nov 2020 20:16:49 +0800</pubDate>
+      
+      <guid>https://ahanoff.dev/about/</guid>
+      <description>Moving json from here to there</description>
+    </item>
+    
   </channel>
 </rss>
