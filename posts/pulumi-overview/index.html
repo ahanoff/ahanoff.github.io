@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.79.0" />
+
+  <title> Pulumi overview |  Akhan Zhakiyanov&#39;s website</title>
+  <link rel="stylesheet" href="https://ahanoff.dev/css/index.css">
+  <link rel="stylesheet" href="https://ahanoff.dev/css/classes.css">
+  <link rel="canonical" href="https://ahanoff.dev/posts/pulumi-overview/">
+  <link rel="alternate" type="application/rss+xml" href="" title="Akhan Zhakiyanov&#39;s website">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="menus">
+  
+
+  <nav >
+    
+    <a href="/"> Home</a>
+    
+    <a href="/projects"> Projects</a>
+    
+    <a href="/about/"> About</a>
+    
+  </nav>
+
+  <nav class="fontawesome">
+    
+    <a href="https://github.com/ahanoff" target="_blank">
+        <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+  </nav>
+  
+  
+</header>
+
+<article id="article">
+  <header>
+  
+
+    <h1 style="text-align: center;" >Pulumi overview</h1>
+    <div class="post-meta">
+    
+      <time datetime="2020-12-25T02:46:13&#43;08:00">December 25, 2020</time> &nbsp; 
+    
+
+     &nbsp;
+
+    
+    
+    
+
+    
+    </div>
+  </header>
+
+  <p>If by an odd quirk of fate you work with cloud infrastructure and hear <code>Infrastructure as a Code</code> mantra, then you should be familiar with IaC tools like:</p>
+<ul>
+<li><a href="https://www.hashicorp.com/products/terraform">Terraform</a> / <a href="https://terragrunt.gruntwork.io/">Terragrunt</a></li>
+<li><a href="https://www.pulumi.com">Pulumi</a></li>
+<li>AWS Cloudformation (sorry there will be no link to this piece of shit)</li>
+<li><a href="https://aws.amazon.com/cdk/">AWS CDK</a></li>
+</ul>
+<p>My jorney started with Terraform, but over time I switched to Pulumi. So let&rsquo;s get a little bit of details what Pulumi is</p>
+<h1 id="what-is-pulumi">What is pulumi</h1>
+<p>Pulumi lets you define your infrastructure resources as a code for multiple providers, and unlike Terraform that uses HCL (Hashicorp Configuration language) or Cloudformation (JSON),
+it uses normal programming languages: either nodejs, .net, golang or python.</p>
+<p>Pulumi programs are structured as projects and stacks. The distinction between them is:</p>
+<ul>
+<li>Program: a collection of files written in your chosen programming language</li>
+<li>Project: a directory containing a program, with metadata, so Pulumi knows how to run it</li>
+<li>Stack: an instance of your project, each often corresponding to a different cloud environment (DEV/PROD)</li>
+</ul>
+<p>I yet to try golang or .net, but my opinion compiled, static, strongly typed languages don&rsquo;t have significant advantage here. So my personal choice is NodeJS/Typescript for a few reasons:</p>
+<ul>
+<li>rich NodeJS ecosystem</li>
+<li>typescript provides necessary types support</li>
+<li>it doesn&rsquo;t matter how fast project compiles, pulumi still will build entire state before applying changes (and it&rsquo;s probably most time consuming part)</li>
+<li>sometimes there are bugs in libraries, and in typescript I can resolve them with hacks like <code>any</code>, <code>unknown</code> or <code>@ts-ingore</code> directive. I&rsquo;m not sure how this problems could be solved in .NET for example.</li>
+</ul>
+<p>I will compare them in my next article and provided full update on this matter.</p>
+<p>And of course I would prefer work without this in infra:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><h1 id="typical-project-structure">Typical project structure</h1>
+<p>After completion of several projects with Pulumi, our typical proejct structure looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">├── pulumi                <span style="color:#75715e"># all infra-related code is under `./pulumi` folder. This is the root folder from which pulumi commands are to be executed</span>
+├───── ec2               <span style="color:#75715e"># EC2 related resources, i.e. ec2 instances, load balancers, security groups</span>
+├───── rds               <span style="color:#75715e"># RDS related resource, i.e. instances, databases </span>
+├───── vpc               <span style="color:#75715e"># VPC related resources, i.e. vpc, subnets, availability zones, etc</span>
+├───── Pulumi.yaml       <span style="color:#75715e"># </span>
+├── .github               <span style="color:#75715e"># Github Actions configuration directory</span>
+└── .pulumi               <span style="color:#75715e"># Pulumi CI Application configuration directory</span>
+</code></pre></div><p>Pulumi program and project are always located in <code>pulumi</code> directory, so git repository root directory is kept clean and tidy.</p>
+<p>I work mostly with AWS, then this pulumi directory will have child directories named after used AWS-service, i.e. ec2, rds, vpc, and so on.</p>
+<p>Advantages of this structure:</p>
+<ul>
+<li>you always know what resources are used in project</li>
+<li>you always can find them in AWS Console</li>
+<li>it&rsquo;s easy to learn and adapt within a team</li>
+<li>it&rsquo;s easy to apply same rules to other providers, i.e. azure, digitalocean, etc</li>
+</ul>
+<p>There is also downside as well:</p>
+<ul>
+<li>some resources might depends on each other, and create cyclic references. In this case you have to do some workarounds.</li>
+</ul>
+<h2 id="naming-convention">Naming convention</h2>
+<p>All resources have prefix to make sure they are unique between stacks:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">prefix</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">projectName</span><span style="color:#e6db74">}</span><span style="color:#e6db74">-</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">region</span><span style="color:#e6db74">}</span><span style="color:#e6db74">-</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">stack</span><span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></code></pre></div><p>Then resource will use that prefix:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rdsInstance</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">rds</span>.<span style="color:#a6e22e">Instance</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">prefix</span><span style="color:#e6db74">}</span><span style="color:#e6db74">-test`</span>, {})
+</code></pre></div><p>If underlying cloud provider enforced length or special characters restrictions, it might disrupt all your perfect plans. For example:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage">Azure Storage accounts names</a> can be between 3 to 24 characters, only lowercase letters and numbers allowed. WTF?! ¯_(ツ)_/¯</li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html">AWS S3 bucket name restrictions</a>. Between 3 and 63, and thanks god allows hyphens!</li>
+</ul>
+<h1 id="cicd">CI/CD</h1>
+<p>Pulumi has rich support for all kind of <a href="https://www.pulumi.com/docs/guides/continuous-delivery/">Continuous Delivery systems</a></p>
+<p>Since our company uses Github, we utilize <a href="https://www.pulumi.com/docs/guides/continuous-delivery/github-actions/">Github Actions workflows</a></p>
+<p>I will not go into details, as documentation is pretty clear. Only add reference to my <a href="https://github.com/ahanoff/pulumi-demo/tree/master/.github/workflows">production ready workflows</a></p>
+<h1 id="interesting-packages">Interesting packages</h1>
+<p>List of package that worth to look at after you get familiar with Pulumi</p>
+<ul>
+<li><a href="https://www.pulumi.com/docs/reference/pkg/random/">@pulumi/random</a> - useful tool when you need to have secure password for your resources</li>
+<li><a href="https://www.pulumi.com/docs/reference/pkg/postgresql/">@pulumi/postgresql</a> - interesting attempt to declaratively define databases, roles, and even permissions.</li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>My feedback will be positive: I used it for multiple projects, and I&rsquo;m going to use it more.</p>
+<p>Source code for demo project can be found at <a href="https://github.com/ahanoff/pulumi-demo">https://github.com/ahanoff/pulumi-demo</a></p>
+
+
+  
+  <footer>
+    <hr>
+    
+    <div class="post-tags">
+    
+    </div>
+  </footer>
+  
+
+  
+
+
+  <div class="comments">
+
+
+
+</div>
+
+</article>
+
+
+
+  
+  
+  
+</body>
+<div class="foot">
+  
+  
+
+  
+</div>
+
+
+
+</html>

@@ -3,17 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://ahanoff.dev/projects/</loc>
-    <lastmod>2020-11-02T20:19:14+08:00</lastmod>
+    <loc>https://ahanoff.dev/</loc>
+    <lastmod>2020-12-25T02:46:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ahanoff.dev/posts/</loc>
+    <lastmod>2020-12-25T02:46:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ahanoff.dev/posts/pulumi-overview/</loc>
+    <lastmod>2020-12-25T02:46:13+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://ahanoff.dev/about/</loc>
     <lastmod>2020-11-02T20:16:49+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ahanoff.dev/</loc>
   </url>
   
   <url>

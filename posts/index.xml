@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Akhan Zhakiyanov&#39;s website</title>
-    <link>https://ahanoff.dev/</link>
-    <description>Recent content on Akhan Zhakiyanov&#39;s website</description>
+    <title>Posts on Akhan Zhakiyanov&#39;s website</title>
+    <link>https://ahanoff.dev/posts/</link>
+    <description>Recent content in Posts on Akhan Zhakiyanov&#39;s website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 25 Dec 2020 02:46:13 +0800</lastBuildDate><atom:link href="https://ahanoff.dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Dec 2020 02:46:13 +0800</lastBuildDate><atom:link href="https://ahanoff.dev/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pulumi overview</title>
       <link>https://ahanoff.dev/posts/pulumi-overview/</link>
@@ -15,15 +15,6 @@
       <guid>https://ahanoff.dev/posts/pulumi-overview/</guid>
       <description>If by an odd quirk of fate you work with cloud infrastructure and hear Infrastructure as a Code mantra, then you should be familiar with IaC tools like:
  Terraform / Terragrunt Pulumi AWS Cloudformation (sorry there will be no link to this piece of shit) AWS CDK  My jorney started with Terraform, but over time I switched to Pulumi. So let&amp;rsquo;s get a little bit of details what Pulumi is</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://ahanoff.dev/about/</link>
-      <pubDate>Mon, 02 Nov 2020 20:16:49 +0800</pubDate>
-      
-      <guid>https://ahanoff.dev/about/</guid>
-      <description>Moving json from here to there</description>
     </item>
     
   </channel>
